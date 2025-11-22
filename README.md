@@ -33,7 +33,8 @@ Proje geliştirme sürecinde simüle edilen bir saldırı girişimi ve sistemin 
 
 Bu projeyi kendi bilgisayarınızda test etmek için Docker'ın kurulu olması gerekmektedir. Aşağıdaki adımları sırasıyla uygulayın:
 
-### 1. Tuzağı Başlatın (Start Container)
+### Uygulamak İçin Yapılması Gerekenler
+1. Tuzağı Başlatın (Start Container)
 Önce Honeypot sunucusunu arka planda çalıştırın:
 
 docker run -p 2223:2222 --name honeypot -d cowrie/cowrie
