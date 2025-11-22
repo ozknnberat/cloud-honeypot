@@ -37,21 +37,19 @@ Bu projeyi kendi bilgisayarınızda test etmek için Docker'ın kurulu olması g
 Önce Honeypot sunucusunu arka planda çalıştırın:
 
 docker run -p 2223:2222 --name honeypot -d cowrie/cowrie
+
 2. Saldırın (Attack Simulation)
 Yeni bir terminal penceresi açın ve kurduğunuz tuzağa sızmayı deneyin:
 
-Bash
 ssh -p 2223 root@localhost
 (Şifre sorulduğunda rastgele bir şifre girebilirsiniz.)
 
 3. İzleyin (Live Monitoring)
 Saldırganın (veya kendinizin) içeride ne yaptığını canlı izlemek için şu komutu girin:
 
-Bash
 docker logs -f honeypot
 
 4. Temizleyin (Stop & Cleanup)
 Test işleminiz bittiğinde tuzağı kapatmak ve silmek için:
 
-Bash
 docker rm -f honeypot
